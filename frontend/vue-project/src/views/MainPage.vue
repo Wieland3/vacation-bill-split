@@ -9,17 +9,35 @@
             </button>
           </div>
       </div>
+      <div>
+        <p class="mt-8 text-2xl">Total amount: {{totalAmount}} €</p>
+      </div>
   </div>
 </template>
 
 <script setup>
 import UserSelect from "@/components/UserSelect.vue";
 import PriceInput from "@/components/PriceInput.vue";
-import { ref } from 'vue';
+import {onMounted, ref} from 'vue';
 import axios from 'axios'
 
 let currentPrice = ref('')
 let currentName = ref('Jan')
+let totalAmount = ref('0')
+
+
+onMounted(async () => {
+    await fetchAmount()
+})
+
+async function fetchAmount() {
+    try {
+        const response = await axios.get('/get-cash')
+        totalAmount.value = response.data['amount']
+    } catch (error) {
+        console.error(error)
+    }
+}
 
 function handleNameSelected(name) {
   currentName.value = name
@@ -33,6 +51,7 @@ async function sendMoney() {
 
     try {
         const response = await axios.post('/send-cash', data)
+        await fetchAmount();
     } catch (error) {
         console.error(error)
     }
