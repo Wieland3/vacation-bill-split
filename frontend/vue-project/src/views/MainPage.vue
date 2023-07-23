@@ -12,6 +12,7 @@
       <div>
         <p class="mt-8 text-2xl">Total amount: {{totalAmount}} €</p>
       </div>
+      <div> Test for continues deployment </div>
   </div>
 </template>
 
